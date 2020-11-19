@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block customcss %}
+<link rel='stylesheet' type='text/css' href="{% static 'all.css' %}">
+<link rel='stylesheet' type='text/css' href="{% static 'list.css' %}">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{% endblock customcss %}
+
+
+{% block header %}
+<!-- <div class="alert alert-primary" role="alert">
+    社内SNS
+    <a href="{% url 'logout' %}">ログアウト</a>
+</div> -->
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">社内SNS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <form class="form-inline mt-2 mt-md-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+</nav>
+
+{% endblock header %}
+
+
+{% block content %}
+<script type="text/javascript" src="{% static 'list.js' %}"></script>
+  
+<main role="main" class="container">
+    <div class="jumbotron">
+        <h1>社内掲示板</h1>
+        <p class="lead">社内に共有したいことを投稿しましょう．<br/>
+            「いいね」や「既読チェック」を活用して楽しく利用しましょう．</p>
+        <!-- <a class="btn btn-lg btn-primary" href="/docs/4.5/components/navbar/" role="button">View navbar docs &raquo;</a> -->
+    </div>
+
+    <div class='all-board'>
+        {% for item in object_list %}
+        <div class='board'>
+            <div class='icon'>
+                <img src="../media/user_icon.png" width=60>
+                <div class='user-name'>{{ item.author }}</div>
+            </div>
+
+            <div class='message'>
+                <div class="balloon1-left" role="alert">
+                    <div class='box-contents'>
+                        <div class='box-title'>{{item.title}}</div>
+                        <div class='box-info'>{{item.created_at}} by <b>{{item.author}}</b></div>
+                        <div class='box-memo'>{{item.content}}</div>
+                        <div class='box-image'><img src="{{ item.images.url }}" width=200></div>
+
+                        <div class='box-button'>
+                            <div class='box-good'>
+                                {% if user.username in item.goodtext %}
+                                    <a href="{% url 'good' item.pk %}">
+                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-suit-heart-fill text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                                        </svg>
+                                        <span class='good-count'>{{item.good}}</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'good' item.pk %}">
+                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-suit-heart-fill text-secondary" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                                        </svg>
+                                        <span class='good-count'>{{item.good}}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        
+                            <div class='box-read'>
+                                {% if user.username in item.readtext %}
+                                    <a href="{% url 'read' item.pk %}">
+                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-check-circle-fill text-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                        </svg>
+                                        <span class='read-count'>{{item.read}}</span>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'read' item.pk %}">
+                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-check-circle-fill text-secondary" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                        </svg>
+                                        <span class='read-count'>{{item.read}}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+</main>
+{% endblock content %}

@@ -5,7 +5,6 @@
 <link rel='stylesheet' type='text/css' href="{% static 'all.css' %}">
 <link rel='stylesheet' type='text/css' href="{% static 'list.css' %}">
 
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 {% endblock customcss %}
 
 
@@ -43,17 +42,16 @@
 
 
 {% block content %}
-<script type="text/javascript" src="{% static 'list.js' %}"></script>
   
 <main role="main" class="container">
     <div class="jumbotron">
         <h1>社内掲示板</h1>
         <p class="lead">社内に共有したいことを投稿しましょう．<br/>
             「いいね」や「既読チェック」を活用して楽しく利用しましょう．</p>
-        <!-- <a class="btn btn-lg btn-primary" href="/docs/4.5/components/navbar/" role="button">View navbar docs &raquo;</a> -->
     </div>
 
     <div class='all-board'>
+
         {% for item in object_list %}
         <div class='board'>
             <div class='icon'>
@@ -70,40 +68,34 @@
                         <div class='box-image'><img src="{{ item.images.url }}" width=200></div>
 
                         <div class='box-button'>
+
+                            <!-- <a class="likebutton btn btn-primary btn-lg" id="like{{ item.id }}"  data-catid="{{ item.id }}">Like{{ item.id }}</a> -->
+
                             <div class='box-good'>
                                 {% if user.username in item.goodtext %}
-                                    <a href="{% url 'good' item.pk %}">
-                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-suit-heart-fill text-danger" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                                        </svg>
-                                        <span class='good-count'>{{item.good}}</span>
-                                    </a>
+                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="likebutton bi bi-suit-heart-fill text-danger" id="like{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                                    </svg>
                                 {% else %}
-                                    <a href="{% url 'good' item.pk %}">
-                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-suit-heart-fill text-secondary" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
-                                        </svg>
-                                        <span class='good-count'>{{item.good}}</span>
-                                    </a>
+                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="likebutton bi bi-suit-heart-fill text-secondary" id="like{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
+                                    </svg>
                                 {% endif %}
+                                <span class='good-count' id="likecount{{ item.id }}">{{ item.good }}</span>
                             </div>
                         
                             <div class='box-read'>
+
                                 {% if user.username in item.readtext %}
-                                    <a href="{% url 'read' item.pk %}">
-                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-check-circle-fill text-info" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                        </svg>
-                                        <span class='read-count'>{{item.read}}</span>
-                                    </a>
+                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="readbutton bi bi-check-circle-fill text-info" id="read{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
                                 {% else %}
-                                    <a href="{% url 'read' item.pk %}">
-                                        <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-check-circle-fill text-secondary" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                        </svg>
-                                        <span class='read-count'>{{item.read}}</span>
-                                    </a>
+                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="readbutton bi bi-check-circle-fill text-secondary" id="read{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
                                 {% endif %}
+                                <span class='read-count' id="readcount{{ item.id }}">{{ item.read }}</span>
                             </div>
                         </div>
                     </div>
@@ -112,6 +104,62 @@
         </div>
         {% endfor %}
     </div>
-    
 </main>
+
+
+<script type="text/javascript" src="{% static 'list.js' %}"></script>
+<script type="text/javascript"> 
+    $('.likebutton').click(function(){ 
+        var id; 
+        id = $(this).attr("data-catid"); 
+        $.ajax( 
+            { 
+                type:"GET", 
+                url: "{% url 'good' %}", 
+                data:{ 
+                    user_name: "{{ user.username }}" ,
+                    pk: id,
+                    }, 
+                success: function( data ) { 
+                    if (data.good_mode=='good-on'){
+                        $( '#like'+ id ).removeClass('text-secondary'); 
+                        $( '#like'+ id ).addClass('text-danger');
+                        document.getElementById('likecount'+ id).innerHTML=data.good_count
+                    } else {
+                        $( '#like'+ id ).removeClass('text-danger'); 
+                        $( '#like'+ id ).addClass('text-secondary');
+                        document.getElementById('likecount'+ id).innerHTML=data.good_count
+                    }
+                        
+                } 
+            }) 
+    });
+
+    $('.readbutton').click(function(){ 
+        var id; 
+        id = $(this).attr("data-catid"); 
+        $.ajax( 
+            { 
+                type:"GET", 
+                url: "{% url 'read' %}", 
+                data:{ 
+                    user_name: "{{ user.username }}" ,
+                    pk: id,
+                    }, 
+                success: function( data ) { 
+                    if (data.read_mode=='read-on'){
+                        $( '#read'+ id ).removeClass('text-secondary'); 
+                        $( '#read'+ id ).addClass('text-info');
+                        document.getElementById('readcount'+ id).innerHTML=data.read_count
+                    } else {
+                        $( '#read'+ id ).removeClass('text-info'); 
+                        $( '#read'+ id ).addClass('text-secondary');
+                        document.getElementById('readcount'+ id).innerHTML=data.read_count
+                    }
+                        
+                } 
+            }) 
+    });
+
+</script>
 {% endblock content %}

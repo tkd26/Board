@@ -48,6 +48,11 @@
         <h1>社内掲示板</h1>
         <p class="lead">社内に共有したいことを投稿しましょう．<br/>
             「いいね」や「既読チェック」を活用して楽しく利用しましょう．</p>
+        <p class="postbutton">
+            <a href="{% url 'create' %}">
+                <button type="button" class="btn btn-primary btn-lg">投稿</button>
+            </a>
+        </p>
     </div>
 
     <div class='all-board'>
@@ -68,20 +73,17 @@
                         <div class='box-image'><img src="{{ item.images.url }}" width=200></div>
 
                         <div class='box-button'>
-
-                            <!-- <a class="likebutton btn btn-primary btn-lg" id="like{{ item.id }}"  data-catid="{{ item.id }}">Like{{ item.id }}</a> -->
-
                             <div class='box-good'>
                                 {% if user.username in item.goodtext %}
-                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="likebutton bi bi-suit-heart-fill text-danger" id="like{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="goodbutton bi bi-suit-heart-fill text-danger" id="good{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
                                     </svg>
                                 {% else %}
-                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="likebutton bi bi-suit-heart-fill text-secondary" id="like{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="20px" height="20px" viewBox="0 0 16 16" class="goodbutton bi bi-suit-heart-fill text-secondary" id="good{{ item.id }}" data-catid="{{ item.id }}" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"/>
                                     </svg>
                                 {% endif %}
-                                <span class='good-count' id="likecount{{ item.id }}">{{ item.good }}</span>
+                                <span class='good-count' id="goodcount{{ item.id }}">{{ item.good }}</span>
                             </div>
                         
                             <div class='box-read'>
@@ -109,7 +111,7 @@
 
 <script type="text/javascript" src="{% static 'list.js' %}"></script>
 <script type="text/javascript"> 
-    $('.likebutton').click(function(){ 
+    $('.goodbutton').click(function(){ 
         var id; 
         id = $(this).attr("data-catid"); 
         $.ajax( 
@@ -122,13 +124,13 @@
                     }, 
                 success: function( data ) { 
                     if (data.good_mode=='good-on'){
-                        $( '#like'+ id ).removeClass('text-secondary'); 
-                        $( '#like'+ id ).addClass('text-danger');
-                        document.getElementById('likecount'+ id).innerHTML=data.good_count
+                        $( '#good'+ id ).removeClass('text-secondary'); 
+                        $( '#good'+ id ).addClass('text-danger');
+                        document.getElementById('goodcount'+ id).innerHTML=data.good_count
                     } else {
-                        $( '#like'+ id ).removeClass('text-danger'); 
-                        $( '#like'+ id ).addClass('text-secondary');
-                        document.getElementById('likecount'+ id).innerHTML=data.good_count
+                        $( '#good'+ id ).removeClass('text-danger'); 
+                        $( '#good'+ id ).addClass('text-secondary');
+                        document.getElementById('goodcount'+ id).innerHTML=data.good_count
                     }
                         
                 } 

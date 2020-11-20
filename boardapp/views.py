@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.http import HttpResponse, JsonResponse
+from .forms import BoardForm
 
 # Create your views here.
 
@@ -53,8 +54,6 @@ def goodfunc(request):
     pk = request.GET['pk']
     post = BoardModel.objects.get(pk=pk)
     good_count = post.good
-    data = {}
-    print(good_count)
 
     if user_name in post.goodtext:
         post.good = post.good - 1
@@ -101,5 +100,6 @@ def readfunc(request):
 class BoardCreate(CreateView):
     template_name = 'create.html'
     model = BoardModel
-    fields = ('title', 'content', 'author', 'images')
+    form_class = BoardForm
+    # fields = ('title', 'content', 'author', 'images')
     success_url = reverse_lazy('list')

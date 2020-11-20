@@ -70,7 +70,9 @@
                         <div class='box-title'>{{item.title}}</div>
                         <div class='box-info'>{{item.created_at}} by <b>{{item.author}}</b></div>
                         <div class='box-memo'>{{item.content}}</div>
+                        {% if item.images != "defo" %}
                         <div class='box-image'><img src="{{ item.images.url }}" width=200></div>
+                        {% endif %}
 
                         <div class='box-button'>
                             <div class='box-good'>

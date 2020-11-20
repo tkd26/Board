@@ -58,6 +58,7 @@
     <div class='all-board'>
 
         {% for item in object_list %}
+
         <div class='board'>
             <div class='icon'>
                 <img src="../media/user_icon.png" width=60>
@@ -67,12 +68,16 @@
             <div class='message'>
                 <div class="balloon1-left" role="alert">
                     <div class='box-contents'>
-                        <div class='box-title'>{{item.title}}</div>
-                        <div class='box-info'>{{item.created_at}} by <b>{{item.author}}</b></div>
-                        <div class='box-memo'>{{item.content}}</div>
-                        {% if item.images != "defo" %}
-                        <div class='box-image'><img src="{{ item.images.url }}" width=200></div>
-                        {% endif %}
+                        <a href="{% url 'detail' item.pk %}" class=to-detail>
+                            <div class='box-title'>{{item.title}}</div>
+                            <div class='box-info'>{{item.created_at}} by <b>{{item.author}}</b></div>
+                            <div class='box-memo'>
+                                {{item.content}}
+                            </div>
+                            {% if item.images != "defo" %}
+                            <div class='box-image'><img src="{{ item.images.url }}" width=200></div>
+                            {% endif %}
+                        </a>
 
                         <div class='box-button'>
                             <div class='box-good'>
@@ -112,6 +117,7 @@
 
 
 <script type="text/javascript" src="{% static 'list.js' %}"></script>
+
 <script type="text/javascript"> 
     $('.goodbutton').click(function(){ 
         var id; 

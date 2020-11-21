@@ -12,11 +12,13 @@
 
 {% if user.is_authenticated %}
 <h1>投稿フォーム</h1>
+{{author}}
 <form action='' method='POST' enctype='multipart/form-data'>{% csrf_token %}
     <input type="text" placeholder="タイトル" name="title" required>
     <textarea placeholder="内容" name="content" required></textarea>
     <input type='file' name='images'>
-    <input type='hidden' name='author' value='{{ user.username }}'>
+    <input type='hidden' name='author' value='{{ user.id }}'>
+    <!-- <input type='hidden' name='author' value='mana'> -->
   
     <input type='submit' value='作成する'>
 

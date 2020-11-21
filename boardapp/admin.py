@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import BoardModel
+from .models import BoardModel, CustomUserModel
 
 # Register your models here.
-
-admin.site.register(BoardModel)
+mymodels = [BoardModel, CustomUserModel]
+admin.site.register(mymodels)

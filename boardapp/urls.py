@@ -9,5 +9,6 @@ urlpatterns = [
     path('detail/<int:pk>', detailfunc, name='detail'),
     path('good/', goodfunc, name='good'),
     path('read/', readfunc, name='read'),
+    # path('create/<int:userid>', BoardCreate.as_view(), name='create'),
     path('create/', BoardCreate.as_view(), name='create'),
 ]

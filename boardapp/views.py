@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import BoardModel
+from .models import BoardModel, CustomUserModel
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
@@ -12,22 +12,24 @@ from .forms import BoardForm
 
 def signupfunc(request):
     if request.method == 'POST':
-        username2 = request.POST['username']
-        password2 = request.POST['password']
+        username_post = request.POST['username']
+        password_post = request.POST['password']
         try:
-            User.objects.get(username=username2)
+            User.objects.get(username=username_post)
             return render(request, 'signup.html', {'error':'このユーザは登録されています'})
         except:
-            user = User.objects.create_user(username2, '', password2)
-            return render(request, 'signup.html', {'some': 100})
-    return render(request, 'signup.html', {'some': 100})
+            user = User.objects.create_user(username_post, '', password_post)
+            customuser = CustomUserModel(username=User.objects.get(username=username_post))
+            customuser.save()
+            return redirect('login')
+    return render(request, 'signup.html', {})
 
 
 def loginfunc(request):
     if request.method == 'POST':
-        username2 = request.POST['username']
-        password2 = request.POST['password']
-        user = authenticate(request, username=username2, password=password2)
+        username_post = request.POST['username']
+        password_post = request.POST['password']
+        user = authenticate(request, username=username_post, password=password_post)
         if user is not None:
             login(request, user)
             return redirect('list')
@@ -101,5 +103,4 @@ class BoardCreate(CreateView):
     template_name = 'create.html'
     model = BoardModel
     form_class = BoardForm
-    # fields = ('title', 'content', 'author', 'images')
     success_url = reverse_lazy('list')
